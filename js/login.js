@@ -30,6 +30,6 @@ document.getElementById("loginBtn").addEventListener("click", ()=> {
     }
 });
 
-document.getElementById("g_id_onload").addEventListener("click", ()=> {
+document.querySelector(".g_id_signin").addEventListener("click", ()=> {
     sessionStorage.setItem("hasPageRunBefore", true);
 });
