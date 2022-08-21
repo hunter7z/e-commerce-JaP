@@ -26,6 +26,10 @@ document.getElementById("loginBtn").addEventListener("click", ()=> {
     }
     if(login){
         sessionStorage.setItem("hasPageRunBefore", true);
-        window.location = "index.html" ;
+        window.location = "index.html";
     }
+});
+
+document.querySelector(".g-signin2").addEventListener('click', ()=> {
+    sessionStorage.setItem("hasPageRunBefore", true);
 });
