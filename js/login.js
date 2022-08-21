@@ -1,3 +1,8 @@
+function runPageWithGoogle() {
+    sessionStorage.setItem("hasPageRunBefore", true);
+    window.location = "index.html";
+}
+
 document.getElementById("userEmail").addEventListener("keydown", ()=> {
     const email = document.getElementById("userEmail");
     email.classList.remove("is-invalid");
@@ -28,8 +33,4 @@ document.getElementById("loginBtn").addEventListener("click", ()=> {
         sessionStorage.setItem("hasPageRunBefore", true);
         window.location = "index.html";
     }
-});
-
-document.querySelector(".g_id_signin").addEventListener("click", ()=> {
-    sessionStorage.setItem("hasPageRunBefore", true);
 });
