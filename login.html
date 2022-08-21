@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>eMercado - Todo lo que busques está aquí</title>
 
-  <meta name="google-signin-client_id" content="499416396151-rnib1e72la64db94qukllt4qrkr6a17o.apps.googleusercontent.com">
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
@@ -41,15 +40,18 @@
             Ingresa tu contraseña
           </div>
         </div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mb-3">
           <div class="col-auto">
             <button type="button" id="loginBtn" class="btn btn-primary">Ingresar</button>
           </div>
         </div>
         <div class="row justify-content-center">
           <div class="col-auto">
-            <br>
-            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            <div id="g_id_onload"
+            data-client_id="499416396151-rnib1e72la64db94qukllt4qrkr6a17o.apps.googleusercontent.com"
+            data-callback="handleCredentialResponse">
+          </div>
+          <div class="g_id_signin" data-type="standard"></div>
           </div>
         </div>
       </div>
@@ -65,7 +67,7 @@
       <p>Clickea <a target="_blank" href="Letra.pdf">aquí</a> para descargar la letra del obligatorio.</p>
     </div>
   </footer>
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="js/login.js"></script>
 </body>
 
