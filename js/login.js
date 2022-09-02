@@ -1,5 +1,5 @@
 function runPageWithGoogle() {
-    sessionStorage.setItem("hasPageRunBefore", true);
+    window.localStorage.setItem("hasPageRunBefore", true);
     window.location = "index.html";
 }
 
@@ -22,15 +22,16 @@ document.getElementById("loginBtn").addEventListener("click", ()=> {
     
     let login = true;
     if(!email){
-        document.getElementById("userEmail").classList.add("is-invalid")
+        document.getElementById("userEmail").classList.add("is-invalid");
         login = false;
     }
     if(!pass){
-        document.getElementById("userPass").classList.add("is-invalid")
+        document.getElementById("userPass").classList.add("is-invalid");
         login = false;
     }
     if(login){
-        sessionStorage.setItem("hasPageRunBefore", true);
+        window.localStorage.setItem("hasPageRunBefore", true);
+        window.localStorage.setItem("userDesignation", email);
         window.location = "index.html";
     }
 });
