@@ -1,6 +1,7 @@
-function runPageWithGoogle() {
+function runPageWithGoogle(res) {
+    console.log(res.profileObj);
     window.localStorage.setItem("hasPageRunBefore", true);
-    window.location = "index.html";
+    // window.location = "index.html";
 }
 
 document.getElementById("userEmail").addEventListener("input", ()=> {
