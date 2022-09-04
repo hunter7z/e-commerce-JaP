@@ -1,7 +1,9 @@
 function runPageWithGoogle(res) {
-    console.log(res);
-    window.localStorage.setItem("hasPageRunBefore", true);
-    // window.location = "index.html";
+    // Debo utilizar el parametro que devuelve esta función
+    // Para mostrar el usuario en el navbar
+    // Especificamente res.credential y parciarlo con una libreria
+    window.localStorage.setItem("userDesignation", "Tu Email")
+    window.location = "index.html";
 }
 
 document.getElementById("userEmail").addEventListener("input", ()=> {
