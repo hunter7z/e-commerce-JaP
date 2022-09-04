@@ -1,5 +1,5 @@
 function runPageWithGoogle(res) {
-    console.log(res.profileObj);
+    console.log(res);
     window.localStorage.setItem("hasPageRunBefore", true);
     // window.location = "index.html";
 }
