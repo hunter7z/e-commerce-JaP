@@ -3,12 +3,12 @@ function runPageWithGoogle() {
     window.location = "index.html";
 }
 
-document.getElementById("userEmail").addEventListener("keydown", ()=> {
+document.getElementById("userEmail").addEventListener("input", ()=> {
     const email = document.getElementById("userEmail");
     email.classList.remove("is-invalid");
     email.classList.add("is-valid");
 });
-document.getElementById("userPass").addEventListener("keydown", ()=> {
+document.getElementById("userPass").addEventListener("input", ()=> {
     const pass = document.getElementById("userPass");
     pass.classList.remove("is-invalid");
     pass.classList.add("is-valid");
