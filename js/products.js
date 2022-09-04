@@ -1,6 +1,7 @@
 const catID = localStorage.getItem("catID");
 const min = document.getElementById("rangeFilterCountMin");
 const max = document.getElementById("rangeFilterCountMax");
+let userSearch;
 let currentCategoryName = "";
 let currentProductsArray = [];
 
@@ -25,7 +26,11 @@ function showProductsList(productArray = currentProductsArray) {
     for (let i = 0; i < productArray.length; i++) {
       const product = productArray[i];
 
+      // Condición según valores min y max
       if(!(product.cost < parseInt(min.value)) && !(product.cost > parseInt(max.value))) {
+        // Condición según valor del input de búsqueda 
+        if(product.name.toLowerCase().includes(userSearch) || userSearch === undefined) {
+
           htmlContentToAppend += `
           <div class="list-group-item list-group-item-action cursor-active">
           <div class="row">
@@ -42,6 +47,8 @@ function showProductsList(productArray = currentProductsArray) {
               </div>
           </div>
           `;
+
+        }
       }
       document.getElementById("product-list-container").innerHTML = htmlContentToAppend;
   }
@@ -57,10 +64,11 @@ document.addEventListener('DOMContentLoaded', ()=> {
         }
   });
 
-//   Escucha de Evento para modificar el Array ajustandolo a la búsqueda del usuario
-//   document.getElementById("searchInput").addEventListener("input", ()=> {
-
-//   });
+  // Escucha de Evento para modificar la variable userSeach, con el contenido ingresado por el usuario
+  document.getElementById("userSearch").addEventListener("input", function() {
+    userSearch = this.value.toLowerCase();
+    showProductsList();
+  });
 
   // Escucha de Evento para modificar el Array ajustandolo al Precio minimo y/o maximo que ingrese el usuario
   document.getElementById("rangeFilterCount").addEventListener("click", ()=> {
