@@ -20,6 +20,11 @@ function showCategoryName() {
     document.querySelector(".lead").innerHTML = content;
 }
 
+function setProductID(id) {
+	window.localStorage.setItem("productID", id);
+	window.location = "product-info.html";
+}
+
 function showProductsList(productArray = currentProductsArray) {
     let htmlContentToAppend = "";
     
@@ -32,7 +37,7 @@ function showProductsList(productArray = currentProductsArray) {
         if(product.name.toLowerCase().includes(userSearch) || userSearch === undefined) {
 
           htmlContentToAppend += `
-          <div class="list-group-item list-group-item-action cursor-active">
+          <div onclick="setProductID(${product.id})" class="list-group-item list-group-item-action cursor-active">
           <div class="row">
               <div class="col-3">
                   <img src="${product.image}" alt="${product.description}" class="img-thumbnail">
@@ -47,7 +52,6 @@ function showProductsList(productArray = currentProductsArray) {
               </div>
           </div>
           `;
-
         }
       }
       document.getElementById("product-list-container").innerHTML = htmlContentToAppend;
