@@ -63,11 +63,12 @@ function showComments() {
         htmlContentToAppend += `
             <div class="col-11 col-sm-12 col-md-12 col-lg-12 border p-2">
                 <div class="d-flex">
-                    <p><span class="fw-bold">${comment.user}</span> - ${comment.dateTime} - </p>
+                    <p class="m-0"><span class="fw-bold">${comment.user}</span> - ${comment.dateTime} - </p>
                     <div class="ratings ms-1">
                         ${stars}
                     </div>
-                </div>     
+                </div>
+                <p class="m-0">${comment.description}</p>  
             </div>
         `;
 
@@ -94,7 +95,6 @@ function getScore(stars) {
 document.addEventListener('DOMContentLoaded', ()=> {
     getJSONData(PRODUCT_INFO_URL + productID + ".json").then(function(resultObj) {
         if (resultObj.status === "ok") {
-            console.log(resultObj.data);
             product = resultObj.data;
             showProduct();
         }
