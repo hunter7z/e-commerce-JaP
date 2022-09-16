@@ -1,6 +1,6 @@
 const productID = localStorage.getItem("productID");
 let product;
-let comments;
+let commentsObj;
 
 function showProduct() {
     let images = "";
@@ -53,7 +53,7 @@ function showProduct() {
     document.getElementById("product-container").innerHTML = htmlContentToAppend;
 }
 
-function showComments() {
+function showComments(comments = commentsObj) {
     let htmlContentToAppend = "";
     let stars = "";
 
@@ -71,9 +71,9 @@ function showComments() {
                 <p class="m-0">${comment.description}</p>  
             </div>
         `;
-
-        document.getElementById("comments-container").innerHTML = htmlContentToAppend;
     }
+
+    document.getElementById("comments-container").innerHTML += htmlContentToAppend;
 }
 
 function getScore(stars) {
@@ -101,8 +101,11 @@ document.addEventListener('DOMContentLoaded', ()=> {
     });
     getJSONData(PRODUCT_INFO_COMMENTS_URL + productID + ".json").then(function(resultObj) {
         if (resultObj.status === "ok") {
-            comments = resultObj.data;
+            commentsObj = resultObj.data;
             showComments();
         }
     });
+    document.getElementById("").addEventListener("click", ()=> {
+        
+    })
 });
