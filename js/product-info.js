@@ -111,13 +111,13 @@ document.addEventListener('DOMContentLoaded', ()=> {
     document.getElementById("postComment").addEventListener("click", ()=> {
         const description = document.getElementById("userComment").value;
         const stars = parseInt(document.getElementById("userScore").value);
-        
+
         const date = new Date();
-        const [month, day, year]       = [date.getMonth(), date.getDate(), date.getFullYear()];
+        const [month, day, year]     = [date.getMonth(), date.getDate(), date.getFullYear()];
         let [hour, minutes, seconds] = [date.getHours(), date.getMinutes(), date.getSeconds()];
         
         // Agregando un cero a la hora, para que no se muestre un solo número
-        hour = ("0" + hour).slice(-2);
+        hour    = ("0" + hour).slice(-2);
         minutes = ("0" + minutes).slice(-2);
         seconds = ("0" + seconds).slice(-2);
 

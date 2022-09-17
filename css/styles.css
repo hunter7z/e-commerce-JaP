@@ -179,6 +179,12 @@ main {
   min-height: calc(100vh - 210px);
 }
 
+textarea {
+  width: 100%;
+  min-height: 100px;
+  max-width: 600px;
+}
+
 a.custom-card,
 a.custom-card:hover {
   color: inherit;
