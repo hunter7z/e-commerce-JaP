@@ -59,7 +59,7 @@ function showComments(comments = commentsObj) {
 
     for (const comment of comments) {
         stars = getScore(comment.score);
-        console.log(comment.score);
+
         htmlContentToAppend += `
             <div class="col-11 col-sm-12 col-md-12 col-lg-12 border p-2">
                 <div class="d-flex">
@@ -93,19 +93,45 @@ function getScore(stars) {
 }
 
 document.addEventListener('DOMContentLoaded', ()=> {
+    // Obteniendo los datos de los productos
     getJSONData(PRODUCT_INFO_URL + productID + ".json").then(function(resultObj) {
         if (resultObj.status === "ok") {
             product = resultObj.data;
             showProduct();
         }
     });
+    // Obteniendo los comentarios
     getJSONData(PRODUCT_INFO_COMMENTS_URL + productID + ".json").then(function(resultObj) {
         if (resultObj.status === "ok") {
             commentsObj = resultObj.data;
             showComments();
         }
     });
-    document.getElementById("").addEventListener("click", ()=> {
+    // Publicar un comentario
+    document.getElementById("postComment").addEventListener("click", ()=> {
+        const description = document.getElementById("userComment").value;
+        const stars = parseInt(document.getElementById("userScore").value);
         
-    })
+        const date = new Date();
+        const [month, day, year]       = [date.getMonth(), date.getDate(), date.getFullYear()];
+        let [hour, minutes, seconds] = [date.getHours(), date.getMinutes(), date.getSeconds()];
+        
+        // Agregando un cero a la hora, para que no se muestre un solo número
+        hour = ("0" + hour).slice(-2);
+        minutes = ("0" + minutes).slice(-2);
+        seconds = ("0" + seconds).slice(-2);
+
+        // Creando Comentario
+        let userComment = [
+            {
+                user: window.localStorage.getItem("userDesignation"),
+                description: description,
+                score: stars,
+                dateTime: `${year}-${month+1}-${day} ${hour}:${minutes}:${seconds}`,
+            }
+        ];
+
+        // Mostrando los comentarios, con el comentario nuevo
+        showComments(userComment);
+    });
 });
