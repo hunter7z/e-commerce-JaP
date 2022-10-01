@@ -3,13 +3,28 @@ let product;
 let commentsObj;
 
 function showProduct() {
-  let images = "";
-  for (const image of product.images) {
-    images += `
-    <div class="col-12 col-md-6 col-lg-2">
-      <img src="${image}" alt="${product.name}" class="img-fluid border p-1">
+  let imagesDesktop = "";
+  let imagesMobile = "";
+  for (let i = 0; i < product.images.length; i++) {
+    imagesDesktop += `
+    <div class="col-12 col-md-6 col-lg-2 desktopImgs">
+      <img src="${product.images[i]}" alt="${product.name}" class="img-fluid border p-1">
     </div>
-        `;
+    `;
+    // Condicional para agregar la clase active solo al primer item de el carrusel
+    if (i === 0) {
+      imagesMobile += `
+      <div class="carousel-item active">
+        <img src="${product.images[i]}" class="d-block w-100" alt="${product.name}">
+      </div>
+    `;
+    } else {
+      imagesMobile += `
+      <div class="carousel-item">
+        <img src="${product.images[i]}" class="d-block w-100" alt="${product.name}">
+      </div>
+    `;
+    }
   }
 
   // Generando HTML para la información del producto
@@ -45,7 +60,22 @@ function showProduct() {
       <div class="col">
         <p class="fw-bold mb-0">Imágenes ilustrativas</p>
         <div class="row g-3" id="img-container">
-          ${images}
+          ${imagesDesktop}
+
+        <div id="carouselExampleControls" class="carousel border p-1 slide mobileImgs" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          ${imagesMobile}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+        </div>
+          
         </div>
       </div>
     </div>
@@ -86,9 +116,9 @@ function showComments(comments = commentsObj) {
     htmlContentToAppend += `
     <div class="col-11 col-sm-12 col-md-12 col-lg-12 border p-2">
     <div class="d-flex">
-      <div class="d-flex flex-wrap">
+      <div class="d-flex flex-wrap flex-comments">
         <p class="m-0"><span class="fw-bold pe-1 me-1">${comment.user}</span></p>
-        <p class="mb-0 pe-1 me-1">${comment.dateTime}</p>
+        <p class="mb-0 pe-1 me-1 flex-comments__date">${comment.dateTime}</p>
         <div class="ratings">
           ${stars}
         </div>

@@ -202,3 +202,36 @@ a.custom-card:hover {
 #userDropdown:focus {
   color: #fff;
 }
+
+/* Comentarios Responsivos | product-info.html */
+@media screen and (max-width: 500px) {
+  .flex-comments {
+    flex-direction: column;
+  }
+  
+  .flex-comments__date {
+    order: 3232;
+    font-style: italic;
+  }
+} 
+
+/* Imagenes Responsivas | product-info.html */
+.mobileImgs {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .desktopImgs {
+    display: none;
+  }
+  .mobileImgs {
+    display: block;
+  }
+}
+
+/* Botones en el Carrusel | product-info.html */
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  opacity: 1;
+  border-radius: 30%;
+  background-color: #dee2e6;
+}
