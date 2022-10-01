@@ -72,6 +72,7 @@ function showProduct() {
 
 function changeProduct(id) {
   localStorage.setItem("productID", id);
+  history.scrollRestoration = "manual";
   location.reload();
 }
 
@@ -157,6 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     // Mostrando los comentarios, con el comentario nuevo
+    document.getElementById("userComment").value = "";
     showComments(userComment);
   });
 });
