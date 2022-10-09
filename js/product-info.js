@@ -5,6 +5,7 @@ let commentsObj;
 function showProduct() {
   let imagesDesktop = "";
   let imagesMobile = "";
+
   for (let i = 0; i < product.images.length; i++) {
     imagesDesktop += `
     <div class="col-12 col-md-6 col-lg-2 desktopImgs">
@@ -67,11 +68,11 @@ function showProduct() {
           ${imagesMobile}
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="carousel-control-prev-icon prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="carousel-control-next-icon next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
         </div>
@@ -80,13 +81,16 @@ function showProduct() {
       </div>
     </div>
   `;
+  
+  document.getElementById("product-container").innerHTML = htmlContentToAppend_productInfo;
+}
 
-  // Generando HTML para mostrar los productos relacionados
+function relatedProducts() {
+  let htmlContentToAppend = "";
 
-  let htmlContentToAppend_relatedProduct = "";
   for (const item of product.relatedProducts) {
     const { id, image, name } = item;
-    htmlContentToAppend_relatedProduct += `
+    htmlContentToAppend += `
     <div class="col-12 col-md-6 col-lg-4" onclick="changeProduct(${id})">
       <div class="border p-1 mb-2 pointer-cursor">
         <img src="${image}" class="img-fluid p-1" alt="Producto relacionado">
@@ -95,9 +99,7 @@ function showProduct() {
     </div>
     `;
   }
-
-  document.getElementById("product-container").innerHTML = htmlContentToAppend_productInfo;
-  document.getElementById("relatedProducts").innerHTML = htmlContentToAppend_relatedProduct;
+  document.getElementById("relatedProducts").innerHTML = htmlContentToAppend;
 }
 
 function changeProduct(id) {
@@ -127,25 +129,25 @@ function showComments(comments = commentsObj) {
     <p class="m-0">${comment.description}</p>  
     </div>
     `;
-          }
+  }
 
   document.getElementById("comments-container").innerHTML += htmlContentToAppend;
 }
 
 function getScore(stars) {
-  let retorno = "";
+  let content = "";
   for (let i = 0; i < 5; i++) {
     if (i < stars) {
-      retorno += `
+      content += `
       <i class="fa fa-star checked"></i>
       `;
     } else {
-      retorno += `
+      content += `
       <i class="fa fa-star"></i>
       `;
     }
   }
-  return retorno;
+  return content;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -154,6 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (resultObj.status === "ok") {
       product = resultObj.data;
       showProduct();
+      relatedProducts();
     }
   });
   // Obteniendo los comentarios
@@ -173,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let [hour, minutes, seconds] = [date.getHours(), date.getMinutes(), date.getSeconds()];
 
     // Agregando un cero a la hora, para que no se muestre un solo número
-    hour = ("0" + hour).slice(-2);
+    hour    = ("0" + hour).slice(-2);
     minutes = ("0" + minutes).slice(-2);
     seconds = ("0" + seconds).slice(-2);
 

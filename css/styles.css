@@ -48,6 +48,14 @@ nav a {
   }
 }
 
+@media screen and (max-width: 768px) {
+  .jumbotron {
+    background-image: url("../img/cover_back.png");
+    background-position: left +15% bottom 0;
+    background-size: cover;
+  }
+}
+
 .jumbotron p:last-child {
   margin-bottom: 0;
 }
@@ -180,7 +188,7 @@ main {
 }
 
 textarea {
-  width: 100%;
+  width: 95%;
   min-height: 100px;
   max-width: 600px;
 }
@@ -199,6 +207,7 @@ a.custom-card:hover {
   color: orange;
 }
 
+/* User Navbar */
 #userDropdown:focus {
   color: #fff;
 }
@@ -230,7 +239,7 @@ a.custom-card:hover {
 }
 
 /* Botones en el Carrusel | product-info.html */
-.carousel-control-prev-icon, .carousel-control-next-icon {
+.next-icon, .prev-icon {
   opacity: 1;
   border-radius: 30%;
   background-color: #dee2e6;
