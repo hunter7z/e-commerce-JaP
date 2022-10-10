@@ -199,10 +199,6 @@ a.custom-card:hover {
   text-decoration: inherit;
 }
 
-.pointer-cursor {
-  cursor: pointer;
-}
-
 .checked {
   color: orange;
 }
@@ -212,31 +208,6 @@ a.custom-card:hover {
   color: #fff;
 }
 
-/* Comentarios Responsivos | product-info.html */
-@media screen and (max-width: 500px) {
-  .flex-comments {
-    flex-direction: column;
-  }
-  
-  .flex-comments__date {
-    order: 3232;
-    font-style: italic;
-  }
-} 
-
-/* Imagenes Responsivas | product-info.html */
-.mobileImgs {
-  display: none;
-}
-
-@media screen and (max-width: 768px) {
-  .desktopImgs {
-    display: none;
-  }
-  .mobileImgs {
-    display: block;
-  }
-}
 
 /* Botones en el Carrusel | product-info.html */
 .next-icon, .prev-icon {

@@ -8,7 +8,7 @@ function showProduct() {
 
   for (let i = 0; i < product.images.length; i++) {
     imagesDesktop += `
-    <div class="col-12 col-md-6 col-lg-2 desktopImgs">
+    <div class="col-12 col-md-6 col-lg-2 d-none d-md-flex">
       <img src="${product.images[i]}" alt="${product.name}" class="img-fluid border p-1">
     </div>
     `;
@@ -30,8 +30,9 @@ function showProduct() {
 
   // Generando HTML para la información del producto
   let htmlContentToAppend_productInfo = `
-    <div class="p-4">
-      <h2>${product.name}</h2>
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center p-sm-4 py-4">
+      <h2 class="m-0">${product.name}</h2>
+      <button class="btn btn-success mt-2 mt-sm-0" onclick="buyProduct('25801')">Comprar</button>
     </div>
     <div class="row p-2 pt-4 border-top">
       <div class="col">
@@ -63,7 +64,7 @@ function showProduct() {
         <div class="row g-3" id="img-container">
           ${imagesDesktop}
 
-        <div id="carouselExampleControls" class="carousel border p-1 slide mobileImgs" data-bs-ride="carousel">
+        <div id="carouselExampleControls" class="carousel border p-1 slide d-block d-md-none" data-bs-ride="carousel">
         <div class="carousel-inner">
           ${imagesMobile}
         </div>
@@ -92,7 +93,7 @@ function relatedProducts() {
     const { id, image, name } = item;
     htmlContentToAppend += `
     <div class="col-12 col-md-6 col-lg-4" onclick="changeProduct(${id})">
-      <div class="border p-1 mb-2 pointer-cursor">
+      <div class="border p-1 mb-2 cursor-active">
         <img src="${image}" class="img-fluid p-1" alt="Producto relacionado">
         <h6 class="ps-4 pt-2">${name}</h6>
       </div>
@@ -108,6 +109,11 @@ function changeProduct(id) {
   location.reload();
 }
 
+function buyProduct(id) {
+  localStorage.setItem("userID", id);
+  window.location = "cart.html";
+}
+
 function showComments(comments = commentsObj) {
   let htmlContentToAppend = "";
   let stars = "";
@@ -118,9 +124,9 @@ function showComments(comments = commentsObj) {
     htmlContentToAppend += `
     <div class="col-11 col-sm-12 col-md-12 col-lg-12 border p-2">
     <div class="d-flex">
-      <div class="d-flex flex-wrap flex-comments">
+      <div class="d-flex flex-column flex-sm-row flex-wrap">
         <p class="m-0"><span class="fw-bold pe-1 me-1">${comment.user}</span></p>
-        <p class="mb-0 pe-1 me-1 flex-comments__date">${comment.dateTime}</p>
+        <p class="mb-0 pe-1 me-1 order-5 order-sm-0 fst-italic">${comment.dateTime}</p>
         <div class="ratings">
           ${stars}
         </div>
@@ -183,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Creando Comentario
     let userComment = [
       {
-        user: window.localStorage.getItem("userDesignation"),
+        user: localStorage.getItem("userDesignation"),
         description: description,
         score: stars,
         dateTime: `${year}-${month + 1}-${day} ${hour}:${minutes}:${seconds}`,

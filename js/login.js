@@ -2,7 +2,7 @@ function runPageWithGoogle(res) {
   // Debo utilizar el parametro que devuelve esta función
   // Para mostrar el usuario en el navbar
   // Especificamente res.credential y parciarlo con una libreria
-  window.localStorage.setItem("userDesignation", "Tu Email");
+  localStorage.setItem("userDesignation", "Tu Email");
   window.location = "index.html";
 }
 
@@ -33,7 +33,7 @@ document.getElementById("loginBtn").addEventListener("click", () => {
     login = false;
   }
   if (login) {
-    window.localStorage.setItem("userDesignation", email);
+    localStorage.setItem("userDesignation", email);
     window.location = "index.html";
   }
 });

@@ -1,9 +1,9 @@
-if (window.localStorage.getItem("userDesignation") === null) {
+if (localStorage.getItem("userDesignation") === null) {
   window.location = "login.html";
 } else {
   // Creando <li> para el email del usuario en el navbar
   document.addEventListener("DOMContentLoaded", () => {
-    let userDesignation = window.localStorage.getItem("userDesignation");
+    let userDesignation = localStorage.getItem("userDesignation");
     let li = `
     <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle active-white" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
