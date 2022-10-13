@@ -48,14 +48,6 @@ nav a {
   }
 }
 
-@media screen and (max-width: 768px) {
-  .jumbotron {
-    background-image: url("../img/cover_back.png");
-    background-position: left +15% bottom 0;
-    background-size: cover;
-  }
-}
-
 .jumbotron p:last-child {
   margin-bottom: 0;
 }

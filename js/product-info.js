@@ -32,7 +32,10 @@ function showProduct() {
   let htmlContentToAppend_productInfo = `
     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center p-sm-4 py-4">
       <h2 class="m-0">${product.name}</h2>
-      <button class="btn btn-success mt-2 mt-sm-0" onclick="buyProduct('25801')">Comprar</button>
+      <div class="mt-2 mt-sm-0 align-self-end">
+        <button class="btn btn-success" onclick="buyProduct('25801', ${product.id})">Comprar</button>
+        <button class="btn btn-secondary" onclick="window.location = 'products.html'">Volver</button>
+      </div>
     </div>
     <div class="row p-2 pt-4 border-top">
       <div class="col">
@@ -109,8 +112,9 @@ function changeProduct(id) {
   location.reload();
 }
 
-function buyProduct(id) {
-  localStorage.setItem("userID", id);
+function buyProduct(userID, productID) {
+  localStorage.setItem("userID", userID);
+  localStorage.setItem("clickedProduct", productID);
   window.location = "cart.html";
 }
 
