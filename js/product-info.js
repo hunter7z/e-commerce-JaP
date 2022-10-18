@@ -147,8 +147,6 @@ function buyProduct(id, currency, image, name, cost) {
   }
   
   localStorage.setItem("cartList", JSON.stringify(cartList));
-  // localStorage.setItem("userID", userID);
-  // localStorage.setItem("clickedProduct", productID);
   window.location = "cart.html";
 }
 

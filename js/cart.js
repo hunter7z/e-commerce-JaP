@@ -6,16 +6,19 @@ let userCart = [];
 function showCartItems() {
   let cart;
 
-  cartContainer.innerHTML += `
-  <div class="row align-items-center border-bottom p-2">
-    <div class="col"><img src="${userCart[0].articles[0].image}" class="img-thumbnail" alt"Producto"></div>
-    <div class="col">${userCart[0].articles[0].name}</div>
-    <div class="col unitCost">${userCart[0].articles[0].unitCost}</div>
-    <div class="col"><input type="number" min="1" class="form-control w-50 p-0 inputsToCalc" value="${userCart[0].articles[0].count}"></input></div>
-    <div class="col">${userCart[0].articles[0].currency} <span class="total">${userCart[0].articles[0].count * userCart[0].articles[0].unitCost}</span></div>
-    <div class="col"></div>
-  </div>
-  `;
+  for (const item of userCart[0].articles) {
+    cartContainer.innerHTML += `
+    <div class="row align-items-center border-bottom p-2">
+      <div class="col"><img src="${item.image}" class="img-thumbnail" alt"Producto"></div>
+      <div class="col">${item.name}</div>
+      <div class="col unitCost">${item.unitCost}</div>
+      <div class="col"><input type="number" min="1" class="form-control w-50 p-0 inputsToCalc" value="${item.count}"></input></div>
+      <div class="col">${item.currency} <span class="total">${item.count * item.unitCost}</span></div>
+      <div class="col"></div>
+    </div>
+    `;
+  }
+
   // Añadiendo los otros productos dependiendo si existen
   if (cartList) {
     cart = JSON.parse(cartList);
