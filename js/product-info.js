@@ -33,7 +33,7 @@ function showProduct() {
     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center p-sm-4 py-4">
       <h2 class="m-0">${product.name}</h2>
       <div class="mt-2 mt-sm-0 align-self-end">
-        <button class="btn btn-success" onclick="buyProduct('25801', ${product.id})">Comprar</button>
+        <button class="btn btn-success btn-buy">Comprar</button>
         <button class="btn btn-secondary" onclick="window.location = 'products.html'">Volver</button>
       </div>
     </div>
@@ -87,6 +87,9 @@ function showProduct() {
   `;
   
   document.getElementById("product-container").innerHTML = htmlContentToAppend_productInfo;
+  document.querySelector(".btn-buy").addEventListener("click", () => {
+    buyProduct(product.id, product.currency, product.images[0], product.name, product.cost);
+  })
 }
 
 function relatedProducts() {
@@ -112,9 +115,40 @@ function changeProduct(id) {
   location.reload();
 }
 
-function buyProduct(userID, productID) {
-  localStorage.setItem("userID", userID);
-  localStorage.setItem("clickedProduct", productID);
+function buyProduct(id, currency, image, name, cost) {
+  let cartList = {};
+  // Comprueba si ya existe una lista con productos en el LS 
+  if (localStorage.getItem("cartList")) {
+    cartList = JSON.parse(localStorage.getItem("cartList"));
+    // Comprueba si ya se agregó el Producto anteriormente
+    if (!cartList[id]) {
+      cartList[id] = {
+        count: 1,
+        currency: currency,
+        id: id,
+        image: image,
+        name: name,
+        unitCost: cost
+      };
+    } else {
+      cartList[id].count++;
+    }
+  } else {
+    cartList = {
+      [id]: {
+        count: 1,
+        currency: currency,
+        id: id,
+        image: image,
+        name: name,
+        unitCost: cost
+      }
+    };
+  }
+  
+  localStorage.setItem("cartList", JSON.stringify(cartList));
+  // localStorage.setItem("userID", userID);
+  // localStorage.setItem("clickedProduct", productID);
   window.location = "cart.html";
 }
 

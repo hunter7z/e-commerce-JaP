@@ -41,15 +41,59 @@
       <h2 class="my-4">Carrito de Compras</h2>
     </div>
     <div class="container">
-      <h4>Articulos a Comprar</h4>
-      <!-- <div class="row border">
+      <h4 class="my-3">Articulos a Comprar</h4>
+      <div class="row d-none d-sm-flex fw-bold border-bottom border-dark">
         <div class="col"></div>
         <div class="col">Nombre</div>
         <div class="col">Costo</div>
         <div class="col">Cantidad</div>
         <div class="col">Subtotal</div>
         <div class="col"></div>
-      </div> -->
+      </div>
+      <div id="cartContainer">
+      </div>
+      <div>
+        <h5 class="my-4">Tipo de envío</h5>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="premium-radio">
+          <label class="form-check-label" for="premium-radio">
+            Premium 2 a 5 días (15%)
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="express-radio" checked>
+          <label class="form-check-label" for="express-radio">
+            Express 5 a 8 días (7%)
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="standard-radio" checked>
+          <label class="form-check-label" for="standard-radio">
+            Standard 12 a 15 días (5%)
+          </label>
+        </div>
+      </div>
+      <div class="border-bottom">
+        <h4 class="my-4">Dirección de envío</h4>
+        <div class="mb-4">
+          <div class="row">
+            <div class="col col-md-6">
+              <label for="street" class="form-label">Calle</label>
+              <input type="text" class="form-control" id="street">
+            </div>
+            <div class="col col-md-4">
+              <label for="number-street" class="form-label">Número</label>
+              <input type="text" class="form-control" id="number-street">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-md-6 mt-2">
+              <label for="corner-street" class="form-label">Esquina</label>
+              <input type="text" class="form-control" id="corner-street">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
   <footer class="text-muted">
