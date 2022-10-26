@@ -130,6 +130,15 @@ function buyProduct(id, currency, image, name, cost) {
         name: name,
         unitCost: cost
       };
+    } else if (cartList[id].hasOwnProperty("userCart")) {
+      // Compruebo si el item que viene por defecto en el carrito fue eliminado
+      if (cartList[id].hasOwnProperty("id")) {
+        cartList[id].count++;
+      } else {
+        cartList[id].id = id;
+        cartList[id].count = 1;
+        cartList[id].userCart = false;
+      }
     } else {
       cartList[id].count++;
     }

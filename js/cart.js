@@ -1,54 +1,107 @@
-const userID = localStorage.getItem("userID") ? localStorage.getItem("userID") : "25801";
-const cartList = localStorage.getItem("cartList") ? localStorage.getItem("cartList") : undefined;
+const userID = localStorage.getItem("userID") || "25801";
+const cartListResponse = localStorage.getItem("cartList") || undefined;
 const cartContainer = document.getElementById("cartContainer");
-let userCart = [];
+let response = [];
+let cart = {};
+let total = 0;
 
-function showCartItems() {
-  let cart;
+function updateLocalStorage() {
+  localStorage.setItem("cartList", JSON.stringify(cart));
+}
 
-  for (const item of userCart[0].articles) {
-    cartContainer.innerHTML += `
-    <div class="row align-items-center border-bottom p-2">
-      <div class="col"><img src="${item.image}" class="img-thumbnail" alt"Producto"></div>
-      <div class="col">${item.name}</div>
-      <div class="col unitCost">${item.unitCost}</div>
-      <div class="col"><input type="number" min="1" class="form-control w-50 p-0 inputsToCalc" value="${item.count}"></input></div>
-      <div class="col">${item.currency} <span class="total">${item.count * item.unitCost}</span></div>
-      <div class="col"></div>
-    </div>
-    `;
+function updateTotal() {
+  let dolar = 0.025; 
+  total = 0;
+  for (const item in cart) {
+    if (cart[item].id) {
+      if (cart[item].currency == "UYU") {
+        let unitCostDolar = parseInt(cart[item].unitCost) * dolar;
+        total += parseInt(cart[item].count) * unitCostDolar;
+      } else {
+        total += parseInt(cart[item].count) * parseInt(cart[item].unitCost);
+      }
+    }
   }
+  console.log(total);
+}
 
-  // Añadiendo los otros productos dependiendo si existen
-  if (cartList) {
-    cart = JSON.parse(cartList);
-    for (const item in cart) {
+function deleteItem(id) {
+  if (!cart[id].hasOwnProperty("userCart")) {
+    delete cart[id];
+  } else {
+    cart[id].userCart = true;
+    delete cart[id].id;
+  }
+  updateLocalStorage();
+  updateTotal();
+  showCartList();
+}
+
+// Añade una escucha de evento para calcular el subtotal
+function calcSubTotal() {
+  document.querySelectorAll("input.subtotal").forEach((e, i) => {
+    e.addEventListener("input", (e) => {
+      let unitCost = document.querySelectorAll("div.unitCost")[i].innerHTML;
+      let quantity = document.querySelectorAll("input.subtotal")[i].value;
+      let spanTotal = document.querySelectorAll("span.total")[i];
+      let id = document.querySelectorAll("input.subtotal")[i].id;
+
+      if (!quantity > 0) {
+        quantity = 1;
+      }
+
+      spanTotal.innerHTML = quantity * unitCost;
+      cart[id].count = quantity;
+
+      updateTotal();
+      updateLocalStorage();
+    });
+  });
+}
+
+function showCartList() {
+  cartContainer.innerHTML = "";
+  for (const item in cart) {
+    if (!(cart[item].userCart)) {
       cartContainer.innerHTML += `
       <div class="row align-items-center border-bottom p-2">
         <div class="col"><img src="${cart[item].image}" class="img-thumbnail" alt"Producto"></div>
         <div class="col">${cart[item].name}</div>
         <div class="col unitCost">${cart[item].unitCost}</div>
-        <div class="col"><input type="number" min="1" class="form-control w-50 p-0 inputsToCalc" value="${cart[item].count}"></input></div>
+        <div class="col"><input type="number" min="1" class="form-control w-50 p-0 subtotal" value="${cart[item].count}" id="${cart[item].id}"></input></div>
         <div class="col">${cart[item].currency} <span class="total">${cart[item].count * cart[item].unitCost}</span></div>
-        <div class="col"></div>
+        <div class="col d-flex justify-content-center">
+          <button class="btn btn-outline-danger" onclick="deleteItem(${cart[item].id})">
+            <i class="fa fa-trash"></i>
+          </button>
+        </div>
       </div>
       `;
     }
   }
+}
 
-  // Escucha de evento para calcular el subtotal
-  document.querySelectorAll("input.inputsToCalc").forEach((e, i) => {
-    e.addEventListener("input", (e) => {
-      let quantity = document.querySelectorAll("input.inputsToCalc")[i].value;
-      let unitCost = document.querySelectorAll("div.unitCost")[i].innerHTML;
+function createCartList() {
+  // Comprueba si existe una lista en el LS
+  if (cartListResponse) {
+    cart = JSON.parse(cartListResponse);
+  }
+  
+  // Añade el producto precargado al Carrito
+  for (const item of response[0].articles) {
+    if (!cart[item.id]) {
+      cart[item.id] = {
+        count: item.count,
+        currency: item.currency,
+        id: item.id,
+        image: item.image,
+        name: item.name,
+        unitCost: item.unitCost,
+        userCart: false
+      };
+    }
+  }
 
-      if (quantity > 0) {
-        document.querySelectorAll("span.total")[i].innerHTML = quantity * unitCost;
-      } else {
-        document.querySelectorAll("span.total")[i].innerHTML = 0;
-      }
-    });
-  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -56,8 +109,11 @@ document.addEventListener("DOMContentLoaded", () => {
   getJSONData(CART_INFO_URL + userID + ".json")
   .then(function (resultObj) {
     if (resultObj.status === "ok") {
-      userCart.push(resultObj.data);
-      showCartItems();
+      response.push(resultObj.data);
+      createCartList();
+      showCartList();
+      calcSubTotal();
+      updateTotal();
     }
   });
 });
