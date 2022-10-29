@@ -53,76 +53,79 @@
       <div id="cartContainer">
       </div>
 
-      <!-- <form needs-validation>
+      <form method="get" action="#" class="row g-3 needs-validation" id="form" novalidate>
         <div>
           <h5 class="my-4">Tipo de envío</h5>
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="premium-radio">
+            <input class="form-check-input" type="radio" name="shippingType" value="premium" id="premium-radio" checked required>
             <label class="form-check-label" for="premium-radio">
               Premium 2 a 5 días (15%)
             </label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="express-radio" checked>
+            <input class="form-check-input" type="radio" name="shippingType" value="express" id="express-radio" required>
             <label class="form-check-label" for="express-radio">
               Express 5 a 8 días (7%)
             </label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="standard-radio" checked>
+            <input class="form-check-input" type="radio" name="shippingType" value="standard" id="standard-radio" required>
             <label class="form-check-label" for="standard-radio">
               Standard 12 a 15 días (5%)
             </label>
+            <div class="invalid-feedback">Es necesario ingresar un tipo de envio</div>
           </div>
         </div>
         <div class="border-bottom">
-          <h4 class="my-4">Dirección de envío</h4>
+          <h4>Dirección de envío</h4>
           <div class="mb-4">
             <div class="row">
               <div class="col col-md-6">
                 <label for="street" class="form-label">Calle</label>
-                <input type="text" class="form-control" id="street">
+                <input type="text" class="form-control" name="street" id="street" required>
+                <div class="invalid-feedback">Es necesario ingresara una calle</div>
               </div>
               <div class="col col-md-4">
                 <label for="number-street" class="form-label">Número</label>
-                <input type="text" class="form-control" id="number-street">
+                <input type="text" class="form-control" name="numberStreet" id="number-street" required>
+                <div class="invalid-feedback">Es necesario ingresara un número</div>
               </div>
             </div>
             <div class="row">
               <div class="col col-md-6 mt-2">
                 <label for="corner-street" class="form-label">Esquina</label>
-                <input type="text" class="form-control" id="corner-street">
+                <input type="text" class="form-control no-required" name="cornerStreet" id="corner-street">
               </div>
             </div>
           </div>
         </div>
         <div class="border-bottom">
-          <h5 class="my-4">Costos</h5>
+          <h5>Costos</h5>
           <div>
             <div class="list-group-item">
               <div class="d-flex justify-content-between">
                 <p class="m-0">Subtotal</p>
-                <p class="m-0">USD 15200</p>
+                <p class="m-0">USD <span id="all-subtotal"></span></p>
               </div>
               <p class="m-0">Costo unitario del producto por cantidad</p>
             </div>
             <div class="list-group-item">
               <div class="d-flex justify-content-between">
                 <p class="m-0">Costo de envió</p>
-                <p class="m-0">USD 456</p>
+                <p class="m-0">USD <span id="shipping-cost"></span></p>
               </div>
               <p class="m-0">Según el tipo de envió</p>
             </div>
             <div class="list-group-item mb-4">
               <div class="d-flex justify-content-between">
                 <p class="m-0">Total ($)</p>
-                <p class="m-0 fw-bold">USD 15656</p>
+                <p class="m-0 fw-bold">USD <span id="total"></span></p>
               </div>
             </div>
           </div>
         </div>
-        <div><input class="btn btn-primary form-control" type="submit"></div>
-      </form> -->
+        <div><input class="btn btn-primary w-100" type="submit" id="sendForm" value="Finalizar compra"></div>
+      </form>
 
     </div>
   </main>

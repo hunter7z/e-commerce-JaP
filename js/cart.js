@@ -5,24 +5,79 @@ let response = [];
 let cart = {};
 let total = 0;
 
+function validateShippingAddress() {
+  const street = document.getElementById("street");
+  const numberStreet = document.getElementById("number-street");
+
+  if (street.value.trim()) {
+    street.setCustomValidity("");
+  } else {
+    street.setCustomValidity(false);
+  }
+  if (numberStreet.value.trim()) {
+    numberStreet.setCustomValidity("");
+  } else {
+    numberStreet.setCustomValidity(false);
+  }
+
+  street.addEventListener("input", () => {
+    street.setCustomValidity("");
+  })
+  
+  numberStreet.addEventListener("input", () => {
+    numberStreet.setCustomValidity("");
+  })
+}
+
+function validateShippingType() {
+  let radioBtnValidate = document.querySelector('input[name="shippingType"]:checked');
+  let allRadioBtn = document.querySelectorAll('input[name="shippingType"]');
+
+  if (radioBtnValidate != null) {
+    allRadioBtn
+    .forEach(e => e.setCustomValidity(""));
+  } else {
+    allRadioBtn
+    .forEach(e => e.setCustomValidity(false));
+  }
+}
+
 function updateLocalStorage() {
   localStorage.setItem("cartList", JSON.stringify(cart));
 }
 
-function updateTotal() {
+function calcCosts() {
   let dolar = 0.025; 
-  total = 0;
+  let shippingCostWithTaxes = 0;
+  let shippingCost = document.querySelector('input[name="shippingType"]:checked');
+  let allSubtotals = 0;
+
+
   for (const item in cart) {
     if (cart[item].id) {
       if (cart[item].currency == "UYU") {
-        let unitCostDolar = parseInt(cart[item].unitCost) * dolar;
-        total += parseInt(cart[item].count) * unitCostDolar;
+        let unitCostDolar = Number(cart[item].unitCost) * dolar;
+        allSubtotals += Number(cart[item].count) * unitCostDolar;
       } else {
-        total += parseInt(cart[item].count) * parseInt(cart[item].unitCost);
+        allSubtotals += Number(cart[item].count) * Number(cart[item].unitCost);
       }
     }
   }
-  console.log(total);
+  
+  if (shippingCost != null) {
+    let premium  = shippingCost.value == "premium"  ? (allSubtotals * 0.15).toFixed(2) : undefined;
+    let express  = shippingCost.value == "express"  ? (allSubtotals * 0.07).toFixed(2) : undefined;
+    let standard = shippingCost.value == "standard" ? (allSubtotals * 0.05).toFixed(2) : undefined;
+
+    shippingCostWithTaxes = premium || express || standard;
+    document.getElementById("shipping-cost").innerHTML = shippingCostWithTaxes;
+  } else {
+    document.getElementById("shipping-cost").innerHTML = 0;
+  }
+
+  total = (Number(allSubtotals) + Number(shippingCostWithTaxes)).toFixed(2);
+  document.getElementById("total").innerHTML = total;
+  document.getElementById("all-subtotal").innerHTML = allSubtotals.toFixed(2);
 }
 
 function deleteItem(id) {
@@ -33,7 +88,7 @@ function deleteItem(id) {
     delete cart[id].id;
   }
   updateLocalStorage();
-  updateTotal();
+  calcCosts();
   showCartList();
 }
 
@@ -53,7 +108,7 @@ function calcSubTotal() {
       spanTotal.innerHTML = quantity * unitCost;
       cart[id].count = quantity;
 
-      updateTotal();
+      calcCosts();
       updateLocalStorage();
     });
   });
@@ -105,6 +160,45 @@ function createCartList() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Evento de los botones de radio
+  let allRadioBtn = document.querySelectorAll('input[name="shippingType"]');
+  allRadioBtn
+  .forEach(e => {
+    e.addEventListener("input", () => {
+      calcCosts();
+    });
+  });
+
+  // Validación de formulario
+  (function () {
+    'use strict'
+  
+    let form = document.getElementById("form");
+    form.addEventListener('submit', function (event) {
+      event.stopPropagation();
+      event.preventDefault();
+
+      // Validación => Tipo de envio
+      validateShippingType();  
+
+      // Validación => Dirección de envío
+      validateShippingAddress();
+
+
+      if (form.checkValidity()) {
+        const formdata = new FormData(form);
+        formdata.append("totalPrice", total);
+        for (const item of formdata) {
+          console.log(item[0] + ": " + item[1]);
+        }
+        alert("Nice!!")
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+
+  })();
+
   // Obteniendo los productos que vienen por defecto
   getJSONData(CART_INFO_URL + userID + ".json")
   .then(function (resultObj) {
@@ -113,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
       createCartList();
       showCartList();
       calcSubTotal();
-      updateTotal();
+      calcCosts();
     }
   });
 });
