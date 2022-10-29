@@ -2,12 +2,91 @@ const userID = localStorage.getItem("userID") || "25801";
 const cartListResponse = localStorage.getItem("cartList") || undefined;
 const cartContainer = document.getElementById("cartContainer");
 let response = [];
+let method = "No ha seleccionado";
 let cart = {};
 let total = 0;
+
+function validateMethodPayment() {
+  let missingData = false;
+  let paymentMethodSelected = document.querySelector("input[name='payment-method-selected']:checked");
+  const cardNumber = document.getElementById("card-number");
+  const securityCode = document.getElementById("security-code");
+  const expirationDate = document.getElementById("expiration-date");
+  const accountNumber = document.getElementById("account-number");
+
+  if (paymentMethodSelected != null) {
+
+    if (paymentMethodSelected.id == "radio-btn-method") {
+      // Comprobación de la forma de pago dentro del modal
+      if (cardNumber.value.trim()) {
+        cardNumber.setCustomValidity("");
+      } else {
+        missingData = true;
+        cardNumber.setCustomValidity(false);
+  
+      }
+      // // Comprobación de la forma de pago dentro del modal
+      if (securityCode.value.trim()) {
+        securityCode.setCustomValidity("");
+      } else {
+        missingData = true;
+        securityCode.setCustomValidity(false);
+      }
+      // // Comprobación de la forma de pago dentro del modal
+      if (expirationDate.value.trim()) {
+        expirationDate.setCustomValidity("");
+      } else {
+        missingData = true;
+        expirationDate.setCustomValidity(false);
+      }
+    } else {
+      // Comprobación de la forma de pago dentro del modal
+      if (accountNumber.value.trim()) {
+        accountNumber.setCustomValidity("");
+      } else {
+        missingData = true;
+        expirationDate.setCustomValidity(false);
+      }
+    }
+
+    // Escuchas de evento para mostrar que el dato ingresado es correcto
+    cardNumber.addEventListener("input", () => {
+      cardNumber.setCustomValidity("");
+      document.querySelector(".missing-data").classList.add("d-none");
+    });
+    securityCode.addEventListener("input", () => {
+      securityCode.setCustomValidity("");
+      document.querySelector(".missing-data").classList.add("d-none");
+    });
+    expirationDate.addEventListener("input", () => {
+      expirationDate.setCustomValidity("");
+      document.querySelector(".missing-data").classList.add("d-none");
+    });
+    accountNumber.addEventListener("input", () => {
+      accountNumber.setCustomValidity("");
+      document.querySelector(".missing-data").classList.add("d-none");
+    });
+
+
+    // Le muestra feedback al usuario, en caso de falta de información
+    if (missingData && form.classList.contains("was-validated")) {
+      document.querySelector(".missing-data").classList.add("d-block");
+      document.querySelector(".missing-data").innerHTML = "Rellene todos los campos necesarios";
+    } else {
+      document.querySelector(".missing-data").classList.add("d-none");
+    }
+
+    document.querySelector(".payment-method").innerHTML = method;
+    document.querySelector(".invalid-feedback-payment").classList.add("d-none");
+  } else {
+    document.querySelector(".invalid-feedback-payment").classList.add("d-block");
+  }
+}
 
 function validateShippingAddress() {
   const street = document.getElementById("street");
   const numberStreet = document.getElementById("number-street");
+  const cornerStreet = document.getElementById("corner-street");
 
   if (street.value.trim()) {
     street.setCustomValidity("");
@@ -19,14 +98,23 @@ function validateShippingAddress() {
   } else {
     numberStreet.setCustomValidity(false);
   }
+  if (cornerStreet.value.trim()) {
+    cornerStreet.setCustomValidity("");
+  } else {
+    cornerStreet.setCustomValidity(false);
+  }
 
   street.addEventListener("input", () => {
     street.setCustomValidity("");
-  })
+  });
   
   numberStreet.addEventListener("input", () => {
     numberStreet.setCustomValidity("");
-  })
+  });
+
+  cornerStreet.addEventListener("input", () => {
+    cornerStreet.setCustomValidity("");
+  });
 }
 
 function validateShippingType() {
@@ -160,13 +248,48 @@ function createCartList() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Evento de los botones de radio
+  // Evento de los botones de radio del tipo de Envió
   let allRadioBtn = document.querySelectorAll('input[name="shippingType"]');
   allRadioBtn
   .forEach(e => {
     e.addEventListener("input", () => {
       calcCosts();
     });
+  });
+
+  // Eventos de los botones de radio de las formas de pago
+  let methodOne = document.getElementById("radio-btn-method");
+  methodOne
+  .addEventListener("input", () => {
+    // Mostrando el método de pago seleccionado
+    let removeDisableAttribute = document.getElementById("payment-method-1");
+    removeDisableAttribute.querySelectorAll("input[type='text'], input[type='month']")
+    .forEach(e => e.removeAttribute("disabled"));
+
+    // Deshabilitando el otro método de pago
+    let addDisabledAttribute = document.getElementById("payment-method-2");
+    addDisabledAttribute.querySelectorAll("input[type='text']")
+    .forEach(e => e.setAttribute("disabled", ""));
+
+    method = methodOne.nextElementSibling.innerHTML;
+    validateMethodPayment();
+  });
+
+  let methodTwo = document.getElementById("radio-btn-method-2");
+  methodTwo
+  .addEventListener("input", () => {
+    // Mostrando el método de pago seleccionado
+    let removeDisableAttribute = document.getElementById("payment-method-2");
+    removeDisableAttribute.querySelectorAll("input[type='text']")
+    .forEach(e => e.removeAttribute("disabled"));
+
+    // Deshabilitando el otro método de pago
+    let addDisabledAttribute = document.getElementById("payment-method-1");
+    addDisabledAttribute.querySelectorAll("input[type='text'], input[type='month']")
+    .forEach(e => e.setAttribute("disabled", ""));
+
+    method = methodTwo.nextElementSibling.innerHTML;
+    validateMethodPayment();
   });
 
   // Validación de formulario
@@ -184,14 +307,19 @@ document.addEventListener("DOMContentLoaded", () => {
       // Validación => Dirección de envío
       validateShippingAddress();
 
+      // Validación => Forma de pago
+      validateMethodPayment();
+
+      // Validación => Cantidad de producto > 0
+      for (const item in cart) {
+        if (cart[item].count < 1) {
+          form.setCustomValidity(false);
+        }
+      }
 
       if (form.checkValidity()) {
-        const formdata = new FormData(form);
-        formdata.append("totalPrice", total);
-        for (const item of formdata) {
-          console.log(item[0] + ": " + item[1]);
-        }
-        alert("Nice!!")
+        document.getElementById("alertResult").classList.add('alert-success');
+        document.getElementById("alertResult").classList.add("show");
       }
 
       form.classList.add('was-validated')
