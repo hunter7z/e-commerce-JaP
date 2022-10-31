@@ -176,6 +176,7 @@ function deleteItem(id) {
     showCartList();
  } else {
   document.getElementById("no-delete").classList.add('alert-danger');
+  document.getElementById("alertDanger").innerHTML = "No puedes eliminar todos los articulos del carrito";
   document.getElementById("no-delete").classList.add("show");
   setTimeout(() => {
     document.getElementById("no-delete").classList.remove("show");
@@ -213,7 +214,7 @@ function showCartList() {
       <div class="col"><img src="${cart[item].image}" class="img-thumbnail" alt"Producto"></div>
       <div class="col">${cart[item].name}</div>
       <div class="col unitCost">${cart[item].unitCost}</div>
-      <div class="col"><input type="number" min="1" class="form-control w-50 p-0 subtotal" value="${cart[item].count}" id="${cart[item].id}"></input></div>
+      <div class="col"><input type="number" form="form" min="1" class="form-control w-50 p-0 subtotal" value="${cart[item].count}" id="${cart[item].id}"></input></div>
       <div class="col">${cart[item].currency} <span class="total">${cart[item].count * cart[item].unitCost}</span></div>
       <div class="col d-flex justify-content-center">
         <button class="btn btn-outline-danger" onclick="deleteItem(${cart[item].id})">
@@ -311,6 +312,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Validación => Forma de pago
       validateMethodPayment();
+
+      // Validación => Cantidad de Artículos
+      for (const item in cart) {
+        if (cart[item].count > 0) {
+          document.getElementById(cart[item].id).setCustomValidity("");
+        } else {
+          document.getElementById(cart[item].id).setCustomValidity(false);
+
+          document.getElementById("no-delete").classList.add('alert-danger');
+          document.getElementById("alertDanger").innerHTML = "No puedes eliminar todos los articulos del carrito";
+          document.getElementById("no-delete").classList.add("show");
+        }
+      } 
 
       if (form.checkValidity()) {
         document.getElementById("alertResult").classList.add('alert-success');
