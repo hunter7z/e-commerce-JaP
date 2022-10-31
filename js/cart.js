@@ -169,12 +169,15 @@ function calcCosts() {
 }
 
 function deleteItem(id) {
-  if (!cart[id].hasOwnProperty("userCart")) {
+ if (Object.keys(cart).length != 1) {
     delete cart[id];
-  } else {
-    cart[id].userCart = true;
-    delete cart[id].id;
-  }
+ } else {
+  document.getElementById("no-delete").classList.add('alert-danger');
+  document.getElementById("no-delete").classList.add("show");
+  setTimeout(() => {
+    document.getElementById("no-delete").classList.remove("show");
+  }, 4000)
+ }
   updateLocalStorage();
   calcCosts();
   showCartList();
@@ -205,24 +208,23 @@ function calcSubTotal() {
 function showCartList() {
   cartContainer.innerHTML = "";
   for (const item in cart) {
-    if (!(cart[item].userCart)) {
-      cartContainer.innerHTML += `
-      <div class="row align-items-center border-bottom p-2">
-        <div class="col"><img src="${cart[item].image}" class="img-thumbnail" alt"Producto"></div>
-        <div class="col">${cart[item].name}</div>
-        <div class="col unitCost">${cart[item].unitCost}</div>
-        <div class="col"><input type="number" min="1" class="form-control w-50 p-0 subtotal" value="${cart[item].count}" id="${cart[item].id}"></input></div>
-        <div class="col">${cart[item].currency} <span class="total">${cart[item].count * cart[item].unitCost}</span></div>
-        <div class="col d-flex justify-content-center">
-          <button class="btn btn-outline-danger" onclick="deleteItem(${cart[item].id})">
-            <i class="fa fa-trash"></i>
-          </button>
-        </div>
+    cartContainer.innerHTML += `
+    <div class="row align-items-center border-bottom p-2">
+      <div class="col"><img src="${cart[item].image}" class="img-thumbnail" alt"Producto"></div>
+      <div class="col">${cart[item].name}</div>
+      <div class="col unitCost">${cart[item].unitCost}</div>
+      <div class="col"><input type="number" min="1" class="form-control w-50 p-0 subtotal" value="${cart[item].count}" id="${cart[item].id}"></input></div>
+      <div class="col">${cart[item].currency} <span class="total">${cart[item].count * cart[item].unitCost}</span></div>
+      <div class="col d-flex justify-content-center">
+        <button class="btn btn-outline-danger" onclick="deleteItem(${cart[item].id})">
+          <i class="fa fa-trash"></i>
+        </button>
       </div>
-      `;
-    }
+    </div>
+    `;
   }
 }
+
 
 function createCartList() {
   // Comprueba si existe una lista en el LS
@@ -309,13 +311,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Validación => Forma de pago
       validateMethodPayment();
-
-      // Validación => Cantidad de producto > 0
-      for (const item in cart) {
-        if (cart[item].count < 1) {
-          form.setCustomValidity(false);
-        }
-      }
 
       if (form.checkValidity()) {
         document.getElementById("alertResult").classList.add('alert-success');
