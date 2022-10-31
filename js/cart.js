@@ -192,7 +192,7 @@ function calcSubTotal() {
       let spanTotal = document.querySelectorAll("span.total")[i];
       let id = document.querySelectorAll("input.subtotal")[i].id;
 
-      if (!quantity > 0) {
+      if (quantity <= 0) {
         quantity = 1;
       }
 
