@@ -171,16 +171,16 @@ function calcCosts() {
 function deleteItem(id) {
  if (Object.keys(cart).length != 1) {
     delete cart[id];
+    updateLocalStorage();
+    calcCosts();
+    showCartList();
  } else {
   document.getElementById("no-delete").classList.add('alert-danger');
   document.getElementById("no-delete").classList.add("show");
   setTimeout(() => {
     document.getElementById("no-delete").classList.remove("show");
-  }, 4000)
+  }, 4000);
  }
-  updateLocalStorage();
-  calcCosts();
-  showCartList();
 }
 
 // Añade una escucha de evento para calcular el subtotal
