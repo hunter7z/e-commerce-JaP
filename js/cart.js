@@ -9,6 +9,7 @@ let total = 0;
 function validateMethodPayment() {
   let missingData = false;
   let paymentMethodSelected = document.querySelector("input[name='payment-method-selected']:checked");
+  const form = document.getElementById("form");
   const cardNumber = document.getElementById("card-number");
   const securityCode = document.getElementById("security-code");
   const expirationDate = document.getElementById("expiration-date");
@@ -25,14 +26,14 @@ function validateMethodPayment() {
         cardNumber.setCustomValidity(false);
   
       }
-      // // Comprobación de la forma de pago dentro del modal
+      // Comprobación de la forma de pago dentro del modal
       if (securityCode.value.trim()) {
         securityCode.setCustomValidity("");
       } else {
         missingData = true;
         securityCode.setCustomValidity(false);
       }
-      // // Comprobación de la forma de pago dentro del modal
+      // Comprobación de la forma de pago dentro del modal
       if (expirationDate.value.trim()) {
         expirationDate.setCustomValidity("");
       } else {
@@ -52,28 +53,28 @@ function validateMethodPayment() {
     // Escuchas de evento para mostrar que el dato ingresado es correcto
     cardNumber.addEventListener("input", () => {
       cardNumber.setCustomValidity("");
-      document.querySelector(".missing-data").classList.add("d-none");
+      document.querySelector(".payment-method").classList.remove("text-danger");
     });
     securityCode.addEventListener("input", () => {
       securityCode.setCustomValidity("");
-      document.querySelector(".missing-data").classList.add("d-none");
+      document.querySelector(".payment-method").classList.remove("text-danger");
     });
     expirationDate.addEventListener("input", () => {
       expirationDate.setCustomValidity("");
-      document.querySelector(".missing-data").classList.add("d-none");
+      document.querySelector(".payment-method").classList.remove("text-danger");
     });
     accountNumber.addEventListener("input", () => {
       accountNumber.setCustomValidity("");
-      document.querySelector(".missing-data").classList.add("d-none");
+      document.querySelector(".payment-method").classList.remove("text-danger");
     });
 
 
     // Le muestra feedback al usuario, en caso de falta de información
+
     if (missingData && form.classList.contains("was-validated")) {
-      document.querySelector(".missing-data").classList.add("d-block");
-      document.querySelector(".missing-data").innerHTML = "Rellene todos los campos necesarios";
+      document.querySelector(".payment-method").classList.add("text-danger");
     } else {
-      document.querySelector(".missing-data").classList.add("d-none");
+      document.querySelector(".payment-method").classList.remove("text-danger");
     }
 
     document.querySelector(".payment-method").innerHTML = method;
@@ -169,19 +170,10 @@ function calcCosts() {
 }
 
 function deleteItem(id) {
- if (Object.keys(cart).length != 1) {
-    delete cart[id];
-    updateLocalStorage();
-    calcCosts();
-    showCartList();
- } else {
-  document.getElementById("no-delete").classList.add('alert-danger');
-  document.getElementById("alertDanger").innerHTML = "No puedes eliminar todos los articulos del carrito";
-  document.getElementById("no-delete").classList.add("show");
-  setTimeout(() => {
-    document.getElementById("no-delete").classList.remove("show");
-  }, 4000);
- }
+  delete cart[id];
+  updateLocalStorage();
+  calcCosts();
+  showCartList();
 }
 
 // Añade una escucha de evento para calcular el subtotal
@@ -193,9 +185,9 @@ function calcSubTotal() {
       let spanTotal = document.querySelectorAll("span.total")[i];
       let id = document.querySelectorAll("input.subtotal")[i].id;
 
-      if (quantity <= 0) {
-        quantity = 1;
-      }
+      // if (quantity <= 0) {
+      //   quantity = 1;
+      // }
 
       spanTotal.innerHTML = quantity * unitCost;
       cart[id].count = quantity;
@@ -208,22 +200,32 @@ function calcSubTotal() {
 
 function showCartList() {
   cartContainer.innerHTML = "";
-  for (const item in cart) {
-    cartContainer.innerHTML += `
-    <div class="row align-items-center border-bottom p-2">
-      <div class="col"><img src="${cart[item].image}" class="img-thumbnail" alt"Producto"></div>
-      <div class="col">${cart[item].name}</div>
-      <div class="col unitCost">${cart[item].unitCost}</div>
-      <div class="col"><input type="number" form="form" min="1" class="form-control w-50 p-0 subtotal" value="${cart[item].count}" id="${cart[item].id}"></input></div>
-      <div class="col">${cart[item].currency} <span class="total">${cart[item].count * cart[item].unitCost}</span></div>
-      <div class="col d-flex justify-content-center">
-        <button class="btn btn-outline-danger" onclick="deleteItem(${cart[item].id})">
-          <i class="fa fa-trash"></i>
-        </button>
-      </div>
+  if (Object.entries(cart).length == 0) {
+    document.getElementById("main-container").innerHTML = `
+    <div class="d-flex flex-column align-items-center">
+      <h2 class="text-center text-secondary">El carrito esta vació</h2>
+      <button class="btn btn-secondary text-center" onclick="window.location = 'categories.html'">Buscar productos</button>
     </div>
     `;
+  } else {
+    for (const item in cart) {
+      cartContainer.innerHTML += `
+      <div class="row align-items-center border-bottom p-2">
+        <div class="col"><img src="${cart[item].image}" class="img-thumbnail" alt"Producto"></div>
+        <div class="col">${cart[item].name}</div>
+        <div class="col unitCost">${cart[item].unitCost}</div>
+        <div class="col"><input type="number" form="form" min="1" class="form-control w-50 p-0 subtotal" value="${cart[item].count}" id="${cart[item].id}"></input></div>
+        <div class="col">${cart[item].currency} <span class="total">${cart[item].count * cart[item].unitCost}</span></div>
+        <div class="col d-flex justify-content-center">
+          <button class="btn btn-outline-danger" onclick="deleteItem(${cart[item].id})">
+            <i class="fa fa-trash"></i>
+          </button>
+        </div>
+      </div>
+      `;
+    }
   }
+
 }
 
 
@@ -245,6 +247,8 @@ function createCartList() {
         unitCost: item.unitCost,
         userCart: false
       };
+    } else {
+      cart[item.id].count++;
     }
   }
 
@@ -257,6 +261,8 @@ document.addEventListener("DOMContentLoaded", () => {
   .forEach(e => {
     e.addEventListener("input", () => {
       calcCosts();
+      // Cada vez que el usuario cambie el tipo de envió
+      // se llama a la función para volver a calcular los costos
     });
   });
 
@@ -318,16 +324,25 @@ document.addEventListener("DOMContentLoaded", () => {
         if (cart[item].count > 0) {
           document.getElementById(cart[item].id).setCustomValidity("");
         } else {
-          document.getElementById(cart[item].id).setCustomValidity(false);
-
-          document.getElementById("no-delete").classList.add('alert-danger');
-          document.getElementById("alertDanger").innerHTML = "No puedes eliminar todos los articulos del carrito";
+          document.getElementById("no-delete").classList.add("alert-danger");
+          document.getElementById("no-delete").classList.remove("d-none");
+          document.getElementById("no-delete").classList.add("d-block");
           document.getElementById("no-delete").classList.add("show");
+          
+          setTimeout(() => {
+            document.getElementById("no-delete").classList.add("d-none");
+            document.getElementById("no-delete").classList.remove("d-block");
+            document.getElementById("no-delete").classList.remove("show");
+          },1500)
+            
+            document.getElementById(cart[item].id).setCustomValidity(false);
         }
       } 
 
       if (form.checkValidity()) {
-        document.getElementById("alertResult").classList.add('alert-success');
+        document.getElementById("alertResult").classList.add("alert-success");
+        document.getElementById("alertResult").classList.remove("d-none");
+        document.getElementById("alertResult").classList.add("d-block");
         document.getElementById("alertResult").classList.add("show");
       }
 

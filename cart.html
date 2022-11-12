@@ -127,9 +127,8 @@
         </div>
         <div>
           <h4>Forma de pago</h4>
-          <p><span class="fw-light payment-method">No ha seleccionado</span> <a class="link-primary cursor-active" data-bs-toggle="modal" data-bs-target="#payment-method-modal">Seleccionar</a></p>
+          <p><span class="fw-light payment-method">No ha seleccionado</span><span class="missing-info"></span> <a class="link-primary cursor-active" data-bs-toggle="modal" data-bs-target="#payment-method-modal">Seleccionar</a></p>
           <div class="invalid-feedback invalid-feedback-payment">Debe seleccionar una forma de pago</div>
-          <div class="invalid-feedback missing-data">Debe seleccionar una forma de pago</div>
         </div>
         <div><input class="btn btn-primary w-100" type="submit" id="sendForm" value="Finalizar compra"></div>
 
@@ -200,11 +199,11 @@
     </div>
   </footer>
 
-  <div class="alert fade" id="alertResult" role="alert">
+  <div class="alert fade d-none" id="alertResult" role="alert">
     <span id="resultSpan">¡Has comprado con éxito!</span>
   </div>
-  <div class="alert fade" id="no-delete" role="alert">
-    <span id="alertDanger">No puedes eliminar todos los articulos del carrito</span>
+  <div class="alert fade d-none" id="no-delete" role="alert">
+    <span id="alertDanger">Cantidad de productos incorrecta!!</span>
   </div>
 
   <div id="spinner-wrapper">
