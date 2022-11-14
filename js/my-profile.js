@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   secondName.value = names[1] || "";
   firstLastname.value  = lastnames[0] || "";
   secondLastname.value = lastnames[1] || "";
-  imgContainer.src = localStorage.getItem("userImage") || "/img/img_perfil.png";
+  imgContainer.src = localStorage.getItem("userImage") || "img/img_perfil.png";
   tel.value = localStorage.getItem("tel") || "";
   email.value = localStorage.getItem("email");
   
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("isValid").classList.remove("d-block");
         document.getElementById("isValid").classList.remove("show");
       }, 2000);
-      
+
       // Cambia la imagen del usuario
       changeImage();
     }
