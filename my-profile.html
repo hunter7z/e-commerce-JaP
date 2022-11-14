@@ -19,6 +19,11 @@
       user-select: none;
     }
 
+    .img {
+      height: 7rem;
+      object-fit: cover;
+    }
+
     @media (min-width: 768px) {
       .bd-placeholder-img-lg {
         font-size: 3.5rem;
@@ -52,12 +57,69 @@
     </div>
   </nav>
   <main>
-    <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+    <div class="container p-4">
+      <div class="d-flex border-bottom mx-5 px-5 pb-4 justify-content-between align-items-center">
+        <h2>Perfil</h4>
+        <div class="img-container">
+          <img src="img/img_perfil.png" class="img img-thumbnail" alt="Foto de perfil por defecto" id="userImage">
+        </div>
+      </div>
+      <div class="pb-5 px-5 mx-5 border-bottom" id="form-container">
+        <div class="row pt-2">
+          <div class="col">
+            <label for="first-name" class="form-label">Primer nombre*</label>
+            <input type="text" class="form-control" name="first-name" id="first-name">
+            <div class="invalid-feedback">Ingrese un nombre</div>
+          </div>
+          <div class="col">
+            <label for="second-name" class="form-label">Segundo nombre</label>
+            <input type="text" class="form-control" name="second-name" id="second-name">
+          </div>
+        </div>
+
+        <div class="row pt-2">
+          <div class="col">
+            <label for="first-lastname" class="form-label">Primer apellido*</label>
+            <input type="text" class="form-control" name="first-lastname" id="first-lastname">
+            <div class="invalid-feedback">Ingrese un apellido</div>
+          </div>
+          <div class="col">
+            <label for="second-lastname" class="form-label">Segundo apellido</label>
+            <input type="text" class="form-control" name="second-lastname" id="second-lastname">
+          </div>
+        </div>
+
+        <div class="row pt-2">
+          <div class="col">
+            <label for="email" class="form-label">Email*</label>
+            <input type="email" class="form-control" name="email" id="email">
+            <div class="invalid-feedback">Ingresa un email válido</div>
+          </div>
+          <div class="col">
+            <label for="tel" class="form-label">Teléfono de contacto*</label>
+            <input type="text" class="form-control" name="tel" id="tel">
+            <div class="invalid-feedback">Ingrese un teléfono de contacto valido</div>
+          </div>
+        </div>
+
+        <div class="row pt-2 mb-5">
+          <div class="col-6">
+            <label for="img-file" class="form-label">Imagen de perfil</label>
+            <input type="file" class="form-control" name="img-file" accept=".png, .jpg" id="img-file" required>
+            <div class="invalid-feedback">Selecciona una imagen (.png, .jpg)</div>
+          </div>
+        </div>
+      </div>
+      <div class="ps-5 ms-5 mt-4">
+        <button class="btn btn-primary" id="save-changes">Guardar cambios</button>
       </div>
     </div>
   </main>
+
+  <div class="alert fade d-none" id="isValid" role="alert">
+    <span id="isValid-content">¡Has guardado con exito!</span>
+  </div>
+
   <footer class="text-muted">
     <div class="container">
       <p class="float-end">

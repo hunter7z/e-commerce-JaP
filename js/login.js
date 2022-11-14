@@ -1,15 +1,19 @@
+const validEmail =  /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+
 function runPageWithGoogle(res) {
   // Debo utilizar el parametro que devuelve esta función
   // Para mostrar el usuario en el navbar
   // Especificamente res.credential y parciarlo con una libreria
-  localStorage.setItem("userDesignation", "Tu Email");
+  localStorage.setItem("email", "Tu Email");
   window.location = "index.html";
 }
 
 document.getElementById("userEmail").addEventListener("input", () => {
   const email = document.getElementById("userEmail");
-  email.classList.remove("is-invalid");
-  email.classList.add("is-valid");
+  if (validEmail.test(email.value)) {
+    email.classList.add("is-valid");
+    email.classList.remove("is-invalid");
+  }
 });
 document.getElementById("userPass").addEventListener("input", () => {
   const pass = document.getElementById("userPass");
@@ -24,7 +28,7 @@ document.getElementById("loginBtn").addEventListener("click", () => {
   const pass = document.getElementById("userPass").value.trim();
 
   let login = true;
-  if (!email) {
+  if (!email || !validEmail.test(email)) {
     document.getElementById("userEmail").classList.add("is-invalid");
     login = false;
   }
@@ -33,7 +37,7 @@ document.getElementById("loginBtn").addEventListener("click", () => {
     login = false;
   }
   if (login) {
-    localStorage.setItem("userDesignation", email);
+    localStorage.setItem("email", email);
     window.location = "index.html";
   }
 });

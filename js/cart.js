@@ -244,11 +244,8 @@ function createCartList() {
         id: item.id,
         image: item.image,
         name: item.name,
-        unitCost: item.unitCost,
-        userCart: false
+        unitCost: item.unitCost
       };
-    } else {
-      cart[item.id].count++;
     }
   }
 
@@ -357,6 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (resultObj.status === "ok") {
       response.push(resultObj.data);
       createCartList();
+      updateLocalStorage();
       showCartList();
       calcSubTotal();
       calcCosts();
